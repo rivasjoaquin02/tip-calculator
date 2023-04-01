@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type propsType = {
     handleInfo: (tip: number, total: number) => void;
@@ -8,19 +8,40 @@ const Calculator = ({ handleInfo }: propsType) => {
     const [bill, setBill] = useState<number>(0.0);
     const [tip, setTip] = useState<number>(0.0);
     const [people, setPeople] = useState<number>(1);
+    const [error, setError] = useState<string>("");
 
-    useEffect(() => {
-        const perPeople: number = bill / people;
-        const tipAmountPerson: number = perPeople * tip;
+    const calculateTotals = (
+        bill: number,
+        tip: number,
+        people: number
+    ): { tipAmountPerson: number; totalPerson: number } => {
+        const perPeople: number = people >= 1 ? bill / people : bill;
+        const tipAmountPerson: number = tip > 0 ? perPeople * tip : perPeople;
         const totalPerson: number = perPeople + tipAmountPerson;
 
-        handleInfo(tipAmountPerson, totalPerson);
+        return { tipAmountPerson, totalPerson };
+    };
+
+    useMemo(() => {
+        const { tipAmountPerson, totalPerson } = calculateTotals(
+            bill,
+            tip,
+            people
+        );
+
+        if (isNaN(tipAmountPerson) || isNaN(totalPerson))
+            setError("Please enter valid numbers");
+        else {
+            handleInfo(tipAmountPerson, totalPerson);
+            setError("");
+        }
     }, [bill, tip, people]);
 
     return (
         <div className="calculator">
             <div className="bill">
                 <h2>Bill</h2>
+                {error ?? <p className="error">{error}</p>}
                 <input
                     type="number"
                     step="0.01"
