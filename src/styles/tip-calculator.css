@@ -61,12 +61,6 @@ body {
     color: var(--text-color-muted);
 }
 
-.error {
-    color: red;
-    font-size: 0.8rem;
-    margin-top: 0.2rem;
-}
-
 .calculator input {
     font-family: "SpaceMono";
     font-weight: 700;
@@ -78,6 +72,13 @@ body {
     background-position-x: 0.4em;
 }
 
+.bill div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
 .bill input {
     background-image: var(--dollar-icon);
 }
@@ -88,6 +89,7 @@ body {
 
 .bill input:invalid {
     border: 2px solid var(--invalid-input-border);
+
 }
 
 .number-people input {
@@ -123,7 +125,7 @@ body {
     border: 2px solid var(--invalid-input-border);
 }
 
-#btn6 {
+#custom-tip {
     background-color: hsl(189, 41%, 97%);
     color: hsl(184, 14%, 56%);
 }
